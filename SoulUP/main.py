@@ -1,61 +1,201 @@
+
 from armazenamento import carregar_usuarios, salvar_usuarios
+
+
+# Carrega os usuarios salvos no sistema
 usuarios = carregar_usuarios()
+
+
+
 while True:
+
+    # Menu 
     print("\n===== SOUL UP =====")
-    print("1. Cadastrar usuário")
-    print("2. Listar usuários")
-    print("3. Converter pontos")
-    print("4. Sair")
-    
-    opcao= input("Escolha uma opção: ")
-    
+    print("1. Cadastrar usuario")
+    print("2. Login")
+    print("3. Sair")
+
+
+    opcao = input("Escolha uma opcao: ")
+
+  
     match opcao:
+
+   
         case "1":
-            #Validacao de nome, email e pontos
-            nome = input("Digite o nome do usuário: ")
-            email = input("Digite o email do usuário: ")
-            pontos = int(input("Digite os pontos do usuário: "))
-            # Verificar se o email já está cadastrado
+
+            # Entrada de dados do usuario
+            nome = input("Digite o nome do usuario: ")
+            email = input("Digite o email do usuario: ")
+            senha = input("Digite a senha do usuario: ")
+
+            # Entrada dos pontos iniciais
+            pontos = int(
+                input("Digite os pontos do usuario: ")
+            )
+
+          
+            email_existe = False
+
+         
             for usuario in usuarios:
+
+          
                 if usuario["email"] == email:
-                    print("Email já cadastrado.")
+
+                    email_existe = True
                     break
+
+          
+            if email_existe:
+
+                print("Email ja cadastrado!")
+
+         
             else:
-                usuario = {"nome": nome, "email": email, "pontos": pontos}
+
+              
+                usuario = {
+                    "nome": nome,
+                    "email": email,
+                    "senha": senha,
+                    "pontos": pontos
+                }
+
+              
                 usuarios.append(usuario)
+
+             
                 salvar_usuarios(usuarios)
-            print("Usuário cadastrado com sucesso!") 
+
+                print("Usuario cadastrado com sucesso!")
+
+     
         case "2":
-            if len(usuarios) == 0:
-                print("Nenhum usuário cadastrado.")
-            else:
-                print("Usuários cadastrados:")
-                for usuario in usuarios:
-                    print(f"Nome: {usuario['nome']}, Email: {usuario['email']}, Pontos: {usuario['pontos']}")
+
+            # Entrada do login
+            email = input("Digite o email: ")
+            senha = input("Digite a senha: ")
+
+          
+            login = False
+
+           
+            for usuario in usuarios:
+
+                if (
+                    usuario["email"] == email
+                    and usuario["senha"] == senha
+                ):
+
+                    print(
+                        f"\nBem-vindo {usuario['nome']}!"
+                    )
+
+                    login = True
+
+                   
+                    usuario_logado = usuario
+
+                 
+                    while True:
+
+                        print(
+                            "\n===== AREA DO USUARIO ====="
+                        )
+
+                        print("1. Ver pontos")
+                        print("2. Converter pontos")
+                        print("3. Logout")
+
+                     
+                        opcao_usuario = input(
+                            "Escolha uma opcao: "
+                        )
+
+                      
+                        match opcao_usuario:
+
+                          
+                            case "1":
+
+                                print(
+                                    f"Voce possui "
+                                    f"{usuario_logado['pontos']} pontos."
+                                )
+
+                           
+                            case "2":
+
+                               
+                                pontos = int(
+                                    input(
+                                        "Digite os pontos "
+                                        "a serem convertidos: "
+                                    )
+                                )
+
+                              
+                                if (
+                                    pontos
+                                    <= usuario_logado["pontos"]
+                                ):
+
+                                   
+                                    usuario_logado["pontos"] -= pontos
+
+                                  
+                                    salvar_usuarios(usuarios)
+
+                                    print(
+                                        "Pontos convertidos "
+                                        "com sucesso!"
+                                    )
+
+                                    print(
+                                        f"Saldo atual: "
+                                        f"{usuario_logado['pontos']} pontos"
+                                    )
+
+                                else:
+
+                                    print(
+                                        "Pontos insuficientes!"
+                                    )
+
+                            
+                            case "3":
+
+                                print("Logout realizado.")
+
+                                break
+
+                           
+                            case _:
+
+                                print("Opcao invalida!")
+
+                    break
+
+         
+            if not login:
+
+                print("Email ou senha incorretos!")
+
+       
         case "3":
-            if len(usuarios) == 0:
-                print("Nenhum usuário cadastrado.")
-            else:
-                email = input("Digite o email do usuário: ")
-                for usuario in usuarios:
-                    if usuario["email"] == email:
-                        pontos = int(input("Digite os pontos a serem convertidos: "))
-                        if pontos <= usuario["pontos"]:
-                            usuario["pontos"] -= pontos
-                            print("Pontos convertidos com sucesso!")
-                        else:
-                            print("Pontos insuficientes.")
-                        break
-                else:
-                    print("Usuário não encontrado.")
-        case "4":
+
             print("Saindo...")
             break
+
+       
         case _:
-            print("Opção inválida.")
+
+            print("Opcao invalida!")
 
 
-        # "tabela" de cupons válidos
+
+# "tabela" de cupons válidos
 cupons = {
     "DESCONTO10": 10,   # código: porcentagem de desconto
     "PROMO20": 20,
@@ -80,4 +220,3 @@ def aplicar_cupom(valor_total):
         print("Cupom inválido!")
         return valor_total     
 
-        

@@ -3,5 +3,22 @@
         "nome": "renato",
         "email": "reanto@gmail.com",
         "pontos": 20000000
+    },
+    {
+        "nome": "paulo",
+        "email": "paulo@gmail.com",
+        "pontos": 22232
+    },
+    {
+        "nome": "C:\\Users\\preto\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe d:/fiap/Challenge-PYTHON/SoulUP/main.py",
+        "email": "4",
+        "senha": "4",
+        "pontos": 4
+    },
+    {
+        "nome": "renato",
+        "email": "renato22@gmail.com",
+        "senha": "renato",
+        "pontos": 199800
     }
 ]
