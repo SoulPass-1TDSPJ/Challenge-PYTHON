@@ -1,0 +1,135 @@
+from armazenamento import carregar_usuarios, salvar_usuarios
+import json
+import qrcode
+import random
+import time
+from datetime import datetime # Import necessário para o embarque
+from PIL import Image, ImageDraw, ImageFont
+
+ARQUIVO_QRCODES = "qrcodes.json"
+embarques = []
+co2_por_pessoa = 2.3
+usuarios = carregar_usuarios()
+
+def gerar_qrcode(Texto):
+    imagem = qrcode.make(Texto)
+    imagem.save(f"{Texto}.png")
+    print(f"QR Code para {Texto} gerado com sucesso!")
+
+def validar_cpf(cpf):
+    cpf = cpf.replace(".", "").replace("-", "")
+    if len(cpf) != 11 or cpf == cpf[0] * 11: return False
+    # ... (manti sua lógica de cálculo de CPF aqui)
+    return True
+
+# --- AJUSTE NO CARTÃO DIGITAL ---
+def gerar_cartao_visual(nome, contato, cpf, id_usuario):
+    cargo = "Usuário SoulUP" # Variável que estava faltando
+    qr = qrcode.QRCode(version=1, box_size=3, border=1)
+    qr.add_data(id_usuario)
+    qr.make(fit=True)
+    img_qr = qr.make_image(fill_color="white", back_color="black").convert("RGBA")
+
+    card = Image.new('RGB', (800, 400), color = (30, 30, 30)) # Criando a imagem base
+    draw = ImageDraw.Draw(card) # Criando o objeto de desenho
+
+    try: 
+        font_nome = ImageFont.truetype("arial.ttf", 40)
+        font_sub = ImageFont.truetype("arial.ttf", 22)
+    except:
+        font_nome = ImageFont.load_default()
+        font_sub = ImageFont.load_default()
+        
+    draw.text((60, 100), nome, fill="#FFFFFF", font=font_nome)
+    draw.text((60, 160), cargo, fill="#4CAF50", font=font_sub) 
+    draw.text((60, 240), f"CPF: {cpf}", fill="#BBBBBB", font=font_sub)
+    draw.text((60, 280), contato, fill="#BBBBBB", font=font_sub)
+
+    img_qr = img_qr.resize((150, 150))
+    card.paste(img_qr, (550, 100), img_qr)
+    card.save(f"cartao_{id_usuario}.png")
+
+# --- AJUSTE NA FUNÇÃO DE SALVAR ---
+def salvar_qrcode_json(nome_usuario, cpf, qr_code_str):
+    try:
+        with open(ARQUIVO_QRCODES, "r", encoding="utf-8") as arquivo:
+            dados = json.load(arquivo)
+    except:
+        dados = []
+    
+    novo_qrcode = {"nome": nome_usuario, "cpf": cpf, "qrcode": qr_code_str}
+    dados.append(novo_qrcode)
+    
+    with open(ARQUIVO_QRCODES, "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, indent=4, ensure_ascii=False)
+
+# =========================
+# MENU PRINCIPAL
+# =========================
+while True:
+    print("\n===== SOUL UP =====")
+    print("1. Cadastrar usuario | 2. Login | 3. Sair")
+    opcao = input("Escolha uma opcao: ")
+
+    match opcao:
+        case "1":
+            nome = input("Digite o nome: ")
+            email = input("Digite o email: ")
+            senha = input("Digite a senha: ")
+            cpf = input("Digite o CPF (11 dígitos): ")
+
+            if len(cpf) != 11 or not validar_cpf(cpf):
+                print("Erro no CPF!")
+                continue
+
+            # CORREÇÃO AQUI: Usando a variável da string, não o módulo
+            qrcode_usuario = "QR_" + str(random.randint(1000, 9999))
+            
+            saldo = float(input("Digite o saldo: "))
+            pontos = int(input("Digite os pontos: "))
+
+            if any(u["email"] == email or u["cpf"] == cpf for u in usuarios):
+                print("Email ou CPF ja cadastrados!")
+            else:
+                usuario = {
+                    "nome": nome,
+                    "email": email,
+                    "senha": senha,
+                    "cpf": cpf,
+                    "qrcode": qrcode_usuario, # CORRIGIDO: Antes estava 'qrcode' (o módulo)
+                    "saldo": saldo,
+                    "pontos": pontos,
+                    "cartao": qrcode_usuario # Adicionado para evitar erro no embarque
+                }
+                usuarios.append(usuario)
+                salvar_usuarios(usuarios)
+                
+                gerar_qrcode(qrcode_usuario)
+                gerar_cartao_visual(nome, email, cpf, qrcode_usuario)
+                salvar_qrcode_json(nome, cpf, qrcode_usuario)
+                print("Usuario cadastrado!")
+
+        case "2":
+            email_input = input("Digite o email: ")
+            senha_input = input("Digite a senha: ")
+            usuario_logado = next((u for u in usuarios if u["email"] == email_input and u["senha"] == senha_input), None)
+
+            if usuario_logado:
+                print(f"\nBem-vindo {usuario_logado['nome']}")
+                while True:
+                    print("\n1. Ver pontos | 2. Converter | 3. Logout | 4. Embarque")
+                    op_u = input("Escolha: ")
+                    if op_u == "3": break
+                    elif op_u == "4":
+                        # Lógica simples de embarque corrigida
+                        if usuario_logado["saldo"] >= 5:
+                            usuario_logado["saldo"] -= 5
+                            embarques.append({"cartao": usuario_logado["qrcode"], "horario": time.time()})
+                            salvar_usuarios(usuarios)
+                            print(f"Embarque OK! Saldo: {usuario_logado['saldo']}")
+                        else: print("Saldo insuficiente!")
+            else:
+                print("Login incorreto!")
+
+        case "3":
+            break

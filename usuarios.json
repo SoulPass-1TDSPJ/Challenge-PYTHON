@@ -1,38 +1,12 @@
 [
     {
         "nome": "renato",
-        "email": "reanto@gmail.com",
-        "pontos": 20000000
-    },
-    {
-        "nome": "paulo",
-        "email": "paulo@gmail.com",
-        "pontos": 22232
-    },
-    {
-        "nome": "C:\\Users\\preto\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe d:/fiap/Challenge-PYTHON/SoulUP/main.py",
-        "email": "4",
-        "senha": "4",
-        "pontos": 4
-    },
-    {
-        "nome": "renato",
-        "email": "renato22@gmail.com",
+        "email": "renato",
         "senha": "renato",
-        "pontos": 199800
-    },
-    {
-        "nome": "rena",
-        "email": "rena@gmail.com",
-        "senha": "renato",
-        "pontos": 1980
-    },
-    {
-        "nome": "Renato2",
-        "email": "renat@gmail.com",
-        "senha": "rena",
-        "pontos": 20000000,
-        "cpf": "1111111111111232323232323232",
-        "saldo": 0
+        "cpf": "63874230074",
+        "qrcode": "QR_3392",
+        "saldo": 19995.0,
+        "pontos": 2000000,
+        "cartao": "QR_3392"
     }
 ]
