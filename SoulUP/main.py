@@ -1,6 +1,11 @@
 
 from armazenamento import carregar_usuarios, salvar_usuarios
 
+import time
+#controle de embarque
+embarque = []
+#controle ambiental
+co2_por_pessoa = 2.3  
 
 # Carrega os usuarios salvos no sistema
 usuarios = carregar_usuarios()
@@ -28,9 +33,151 @@ while True:
             nome = input("Digite o nome do usuario: ")
             email = input("Digite o email do usuario: ")
             senha = input("Digite a senha do usuario: ")
+            
+            def validar_cpf(cpf):
 
+    # Remove caracteres
+        cpf = cpf.replace(".", "").replace("-", "")
+
+    # Verifica tamanho
+    if len(cpf) != 11:
+        return False
+
+    # Verifica se todos os números são iguais
+    if cpf == cpf[0] * 11:
+        return False
+
+   
+    # Primeiro dígito
+
+
+    soma = 0
+    peso = 10
+
+    for i in range(9):
+        soma += int(cpf[i]) * peso
+        peso -= 1
+
+    resto = (soma * 10) % 11
+
+    if resto == 10:
+        resto = 0
+
+    if resto != int(cpf[9]):
+        return False
+
+    
+    # Segundo dígito
+    
+
+    soma = 0
+    peso = 11
+
+    for i in range(10):
+        soma += int(cpf[i]) * peso
+        peso -= 1
+
+    resto = (soma * 10) % 11
+
+    if resto == 10:
+        resto = 0
+
+    if resto != int(cpf[10]):
+        return False
+
+        return True
+
+cpf = input("Digite o CPF: ")
+
+if validar_cpf(cpf):
+    print("CPF válido")
+else:
+    print("CPF inválido")
+
+import random
+
+def gerar_cpf():
+
+    numeros = []
+
+    for i in range(9):
+        numeros.append(random.randint(0, 9))
+
+    # Primeiro dígito
+    soma = 0
+    peso = 10
+
+    for num in numeros:
+        soma += num * peso
+        peso -= 1
+
+    digito1 = (soma * 10) % 11
+
+    if digito1 == 10:
+        digito1 = 0
+
+    numeros.append(digito1)
+
+    # Segundo dígito
+    soma = 0
+    peso = 11
+
+    for num in numeros:
+        soma += num * peso
+        peso -= 1
+
+    digito2 = (soma * 10) % 11
+
+    if digito2 == 10:
+        digito2 = 0
+
+    numeros.append(digito2)
+
+    cpf = ""
+
+    for n in numeros:
+        cpf += str(n)
+
+    return cpf
+
+    cpf = gerar_cpf()
+
+print("CPF gerado:", cpf)
+
+def formatar_cpf(cpf):
+
+    return f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
+
+cpf = gerar_cpf()
+
+print("CPF:", formatar_cpf(cpf))
+
+if validar_cpf(cpf):
+    print("CPF válido")
+
+    usuarios = []
+
+cpf = input("CPF: ")
+
+if validar_cpf(cpf):
+
+    nome = input("Nome: ")
+
+    usuario = {
+        "cpf": cpf,
+        "nome": nome
+    }
+
+    usuarios.append(usuario)
+
+    print("Usuário cadastrado")
+
+else:
+    print("CPF inválido")
+
+    
             # Entrada dos pontos iniciais
-            pontos = int(
+                pontos = int(
                 input("Digite os pontos do usuario: ")
             )
 
@@ -59,7 +206,11 @@ while True:
                     "nome": nome,
                     "email": email,
                     "senha": senha,
-                    "pontos": pontos
+                    "pontos": pontos,
+                    "cpf": cpf,
+                    "cartao": cartao,
+                    "qrcode": qrcode,
+                    "saldo": saldo
                 }
 
               
@@ -85,6 +236,7 @@ while True:
 
                 if (
                     usuario["email"] == email
+                    and usuario["cpf"] == cpf
                     and usuario["senha"] == senha
                 ):
 
@@ -107,6 +259,8 @@ while True:
                         print("1. Ver pontos")
                         print("2. Converter pontos")
                         print("3. Logout")
+                        print("4. Realizar embarque")
+                        print("5. Relatorio de impacto ambiental")
 
                      
                         opcao_usuario = input(
@@ -171,9 +325,45 @@ while True:
                                 break
 
                            
-                            case _:
+                            case "4":
 
                                 print("Opcao invalida!")
+                                
+                                horario= time.time()
+                                # Verficia saldo 
+                                if usuario_logado["saldo"] > 0:
+                                    print("Embarque negado! Saldo insuficiente.")
+                                else:
+                                    suspeito = False
+                                    #verifica uso repetido do cartao
+                                    for embarque in embarque:
+                                        if (
+                                            embarque["cartao"]
+                                            == usuario_logado["cartao"]
+                                        
+                                        ):
+                                            diferenca = horario - embarque["horario"]
+                                            if diferenca < 120:  # 2 minutos
+                                                suspeito = True
+                                                print("comportamento supeito detectado! Embarque negado.")
+                                                embarque.append({
+                                                    "cartao": usuario_logado["cartao"],
+                                                    "horario": horario
+                                                })
+                                                usario_logado["saldo"] -= 5
+                                                salvar_usuarios(usuarios)
+                                                print("embarque registrado, mas saldo penalizado em 5 pontos.")
+                                                print(
+                                                    f"Saldo atual: {usuario_logado['saldo']} pontos"
+                                                )
+                            case "5":
+                                total_embarques = len(embarque)
+                                co2_evitado = ( total_embarques * co2_por_pessoa )
+                                print("\n===== RELATORIO DE IMPACTO AMBIENTAL =====")
+                                print(f"total de passageiros:  "
+                                      f"{total_embarques}")
+                                print(f"CO2 evitado: {co2_evitado:.2f} kg")
+                                  
 
                     break
 
@@ -189,11 +379,10 @@ while True:
             break
 
        
-        case _:
+        case "4":
 
             print("Opcao invalida!")
-
-
+    
 
 # "tabela" de cupons válidos
 cupons = {
@@ -219,4 +408,5 @@ def aplicar_cupom(valor_total):
     else:
         print("Cupom inválido!")
         return valor_total     
+        
 

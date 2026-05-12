@@ -26,5 +26,13 @@
         "email": "rena@gmail.com",
         "senha": "renato",
         "pontos": 1980
+    },
+    {
+        "nome": "Renato2",
+        "email": "renat@gmail.com",
+        "senha": "rena",
+        "pontos": 20000000,
+        "cpf": "1111111111111232323232323232",
+        "saldo": 0
     }
 ]
