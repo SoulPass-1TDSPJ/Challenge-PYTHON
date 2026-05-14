@@ -1,8 +1,12 @@
 from armazenamento import carregar_usuarios, salvar_usuarios
 
+import os
 import qrcode
 import random
 import time
+
+PASTA_QR = os.path.join("SoulUp", "QRCod")
+os.makedirs(PASTA_QR, exist_ok=True)
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -31,12 +35,14 @@ usuarios = carregar_usuarios()
 def gerar_qrcode(nome_arquivo, texto):
 
     qr = qrcode.make(texto)
+    
+    caminho = os.path.join(PASTA_QR,f"{nome_arquivo}.png")
 
-    qr.save(f"{nome_arquivo}.png")
+    qr.save(caminho)
 
-    print(f"QR Code salvo como {nome_arquivo}.png")
+    print(f"QR Code salvo como {caminho}")
 
-aaa
+
 # =========================
 # GERAR CARTÃO DIGITAL
 # =========================
@@ -50,7 +56,11 @@ def gerar_cartao(usuario):
     card = Image.new(
         "RGB",
         (largura, altura),
-        color=(15, 15, 15)
+        color=(15, 15, 15),
+        #arrumaaaaaaa
+        #raio_borda = 40,
+        #fundo = Image.new("RGBA", (largura, altura), (0, 0, 0, 0)),
+        #draw_fundo = ImageDraw.Draw(fundo)
     )
 
     draw = ImageDraw.Draw(card)
@@ -76,7 +86,8 @@ def gerar_cartao(usuario):
     # Barra verde lateral
     draw.rectangle(
         [(0, 0), (20, altura)],
-        fill=(0, 255, 120)
+        fill="#02CE91",
+        
     )
 
     # Nome
@@ -99,7 +110,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 210),
         f"ID: {usuario['id']}",
-        fill="#00FF99",
+        fill="#02CE91",
         font=font_info
     )
 
@@ -113,7 +124,7 @@ def gerar_cartao(usuario):
 
     # Abrir QR Code
     qr = Image.open(
-        f"{usuario['qrcode']}.png"
+        os.path.join(PASTA_QR, f"{usuario['qrcode']}.png")
     )
 
     qr = qr.resize((180, 180))
@@ -188,7 +199,7 @@ def validar_cpf(cpf):
 
 while True:
 
-    print("\n===== SOUL UP =====")
+    print("\n===== SOUL PASS =====")
     print("1. Cadastrar usuário")
     print("2. Login")
     print("3. Sair")

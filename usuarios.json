@@ -16,7 +16,67 @@
         "senha": "renato",
         "cpf": "38226451094",
         "qrcode": "QR_USR_36816",
-        "saldo": 199990.0,
-        "pontos": 2998000
+        "saldo": 199985.0,
+        "pontos": 2996000
+    },
+    {
+        "id": "USR_38232",
+        "nome": "gab",
+        "email": "gab@gmai.com",
+        "senha": "renato",
+        "cpf": "99950394007",
+        "qrcode": "QR_USR_38232",
+        "saldo": 200.0,
+        "pontos": 20000
+    },
+    {
+        "id": "USR_27581",
+        "nome": "renato silva",
+        "email": "renato2@gmail.com",
+        "senha": "renato",
+        "cpf": "76578970070",
+        "qrcode": "QR_USR_27581",
+        "saldo": 200.0,
+        "pontos": 20000
+    },
+    {
+        "id": "USR_25427",
+        "nome": "renato silva 2.0",
+        "email": "re@gmail.com",
+        "senha": "renato",
+        "cpf": "40004900014",
+        "qrcode": "QR_USR_25427",
+        "saldo": 200.0,
+        "pontos": 20000
+    },
+    {
+        "id": "USR_55466",
+        "nome": "renato3.0",
+        "email": "ren@gmail.com",
+        "senha": "renato",
+        "cpf": "50223638013",
+        "qrcode": "QR_USR_55466",
+        "saldo": 200.0,
+        "pontos": 20000
+    },
+    {
+        "id": "USR_76918",
+        "nome": "r.30",
+        "email": "re@gmail.cm",
+        "senha": "renato",
+        "cpf": "47577058084",
+        "qrcode": "QR_USR_76918",
+        "saldo": 200.0,
+        "pontos": 200000
+    },
+    {
+        "id": "USR_61344",
+        "nome": "claudio pinto",
+        "email": "c@gmail.com",
+        "senha": "renato",
+        "cpf": "36885538027",
+        "qrcode": "QR_USR_61344",
+        "saldo": 200.0,
+        "pontos": 2000000
     }
 ]
