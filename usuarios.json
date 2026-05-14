@@ -8,5 +8,15 @@
         "saldo": 19995.0,
         "pontos": 2000000,
         "cartao": "QR_3392"
+    },
+    {
+        "id": "USR_36816",
+        "nome": "renato",
+        "email": "renato@gmail.com",
+        "senha": "renato",
+        "cpf": "38226451094",
+        "qrcode": "QR_USR_36816",
+        "saldo": 199990.0,
+        "pontos": 2998000
     }
 ]

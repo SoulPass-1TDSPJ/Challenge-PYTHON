@@ -1,27 +1,142 @@
 from armazenamento import carregar_usuarios, salvar_usuarios
-import json
+
 import qrcode
 import random
 import time
-ARQUIVO_QRCODES = "qrcodes.json"
-# Controle de embarques
+
+from PIL import Image, ImageDraw, ImageFont
+
+# =========================
+# CONTROLE DE EMBARQUES
+# =========================
+
 embarques = []
 
-# Controle ambiental #
+# =========================
+# CONTROLE AMBIENTAL
+# =========================
+
 co2_por_pessoa = 2.3
 
-# Carrega usuarios #
+# =========================
+# CARREGAR USUÁRIOS
+# =========================
+
 usuarios = carregar_usuarios()
 
-# Gerar QR Code para cada usuario
-def gerar_qrcode(Texto):
-    imagem = qrcode.make(Texto)
-    imagem.save(f"{Texto}.png")
-    print(f"QR Code para {Texto} gerado com sucesso!")
-   
+# =========================
+# GERAR QR CODE
+# =========================
+
+def gerar_qrcode(nome_arquivo, texto):
+
+    qr = qrcode.make(texto)
+
+    qr.save(f"{nome_arquivo}.png")
+
+    print(f"QR Code salvo como {nome_arquivo}.png")
+
+
+# =========================
+# GERAR CARTÃO DIGITAL
+# =========================
+
+def gerar_cartao(usuario):
+
+    largura = 800
+    altura = 400
+
+    # Fundo do cartão
+    card = Image.new(
+        "RGB",
+        (largura, altura),
+        color=(15, 15, 15)
+    )
+
+    draw = ImageDraw.Draw(card)
+
+    # Fontes
+    try:
+
+        font_nome = ImageFont.truetype(
+            "arial.ttf",
+            40
+        )
+
+        font_info = ImageFont.truetype(
+            "arial.ttf",
+            22
+        )
+
+    except:
+
+        font_nome = ImageFont.load_default()
+        font_info = ImageFont.load_default()
+
+    # Barra verde lateral
+    draw.rectangle(
+        [(0, 0), (20, altura)],
+        fill=(0, 255, 120)
+    )
+
+    # Nome
+    draw.text(
+        (50, 80),
+        usuario["nome"],
+        fill="white",
+        font=font_nome
+    )
+
+    # Email
+    draw.text(
+        (50, 160),
+        f"Email: {usuario['email']}",
+        fill="#AAAAAA",
+        font=font_info
+    )
+
+    # ID
+    draw.text(
+        (50, 210),
+        f"ID: {usuario['id']}",
+        fill="#00FF99",
+        font=font_info
+    )
+
+    # Saldo
+    draw.text(
+        (50, 260),
+        f"Saldo: R${usuario['saldo']}",
+        fill="white",
+        font=font_info
+    )
+
+    # Abrir QR Code
+    qr = Image.open(
+        f"{usuario['qrcode']}.png"
+    )
+
+    qr = qr.resize((180, 180))
+
+    # Colocar QR no cartão
+    card.paste(qr, (580, 110))
+
+    # Salvar cartão
+    nome_cartao = (
+        f"CARTAO_{usuario['id']}.png"
+    )
+
+    card.save(nome_cartao)
+
+    print(
+        f"Cartão salvo como {nome_cartao}"
+    )
+
+
 # =========================
 # VALIDAR CPF
 # =========================
+
 def validar_cpf(cpf):
 
     cpf = cpf.replace(".", "").replace("-", "")
@@ -36,6 +151,7 @@ def validar_cpf(cpf):
     peso = 10
 
     for i in range(9):
+
         soma += int(cpf[i]) * peso
         peso -= 1
 
@@ -51,6 +167,7 @@ def validar_cpf(cpf):
     peso = 11
 
     for i in range(10):
+
         soma += int(cpf[i]) * peso
         peso -= 1
 
@@ -66,163 +183,24 @@ def validar_cpf(cpf):
 
 
 # =========================
-# GERAR CPF
-# =========================
-def gerar_cpf():
-
-    numeros = []
-
-    for i in range(9):
-        numeros.append(random.randint(0, 9))
-
-    soma = 0
-    peso = 10
-
-    for num in numeros:
-        soma += num * peso
-        peso -= 1
-
-    digito1 = (soma * 10) % 11
-
-    if digito1 == 10:
-        digito1 = 0
-
-    numeros.append(digito1)
-
-    soma = 0
-    peso = 11
-
-    for num in numeros:
-        soma += num * peso
-        peso -= 1
-
-    digito2 = (soma * 10) % 11
-
-    if digito2 == 10:
-        digito2 = 0
-
-    numeros.append(digito2)
-
-    cpf = ""
-
-    for n in numeros:
-        cpf += str(n)
-
-    return cpf
-    
-# =========================
-# GERAR CARTAO DIGITAL
-# =========================
-
-# 1. Configurações dos dados do cartão
-nome = "João Silva"
-contato = "E-mail: joao@email.com"
-cpf = "123.456.789-00"
-id_usuario = "USER_001"
-
-#  Criar o QR Code que irá no cartão
-qr = qrcode.QRCode(version=1, box_size=3, border=1) # Tamanho reduzido para caber no cartão
-qr.add_data(id_usuario)
-qr.make(fit=True)
-
-# Gera o QR Code com fundo transparente e linhas brancas
-img_qr = qr.make_image(fill_color="white", back_color="black").convert("RGBA")
-
-# Criando base do cartão digital
-from PIL import Image, ImageDraw, ImageFont
-
-# Teste rápido para ver se está funcionando:
-img = Image.new('RGB', (100, 30), color = (73, 109, 137))
-print("Importação bem-sucedida!")
-
-try: 
-    font_nome = ImageFont.truetype("arial.ttf", 40)
-    font_sub = ImageFont.truetype("arial.ttf", 22)
-except IOError:
-    font_nome = ImageFont.load_default()
-    font_sub = ImageFont.load_default()
-    
-#Elementos textuais lado esquerdo
-    draw.text((60, 140), nome, fill="#FFFFFF", font=font_nome)
-    draw.text((60, 200), cargo, fill="#4CAF50", font=font_sub) # Detalhe em verde
-    draw.text((60, 280), contato, fill="#BBBBBB", font=font_sub)
-
-#Linha decorativa vertical
-    draw.line([(500, 100), (500, 350)], fill="#333333", width=2)
-
-#colocar qr canto direito
-    img_qr = img_qr.resize((200, 200))
-    card.paste(img_qr, (540, 125), img_qr)
-
-#Salvar o cartão digital
-    card.save("cartao_digital_joao.png")
-print("Cartão digital gerado com sucesso em 'cartao_digital_joao.png'!")
-
-
-def salvar_qrcode(nomer_usuario,cpf ,qrcode):
-    try:
-        with open(
-            ARQUIVO_QRCODES, "r", encoding="utf-8") as arquivo:
-            
-            dados = json.load(arquivo)
-            
-    except:
-        dados = []
-        novo_qrcode = {
-            "nome": nomer_usuario,
-            "cpf": cpf,
-            "qrcode": qrcode
-        }
-        dados.append(novo_qrcode)
-        
-        
-        with open(
-            ARQUIVO_QRCODES, "w", encoding="utf-8") as arquivo:
-                json.dump(dados, arquivo, indent=4, ensure_ascii=False)
-
-        with open("passageiros.json", "r", encoding="utf-8") as f:
-         passageiros = json.load(f)
-
-    encontrado = False
-
-    for p in passageiros:
-
-        if p["id"] == id_passageiro:
-            encontrado = True
-
-            if p.get("embarque") == True:
-                print(" Já embarcou")
-                return
-            
-            p["embarque"] = True
-            p["hora_embarque"] = datetime.now().strftime("%H:%M:%S")
-
-            print(f" Embarque liberado: {p['nome']}")
-            if not encontrado:
-             print(" Passageiro não encontrado")
-
-    with open("passageiros.json", "w", encoding="utf-8") as f:
-        json.dump(passageiros, f, indent=4, ensure_ascii=False)
-    id_lido = input("Digite o ID do passageiro: ")
-    embarque_digital(id_lido)
-# =========================
 # MENU PRINCIPAL
 # =========================
 
 while True:
 
     print("\n===== SOUL UP =====")
-    print("1. Cadastrar usuario")
+    print("1. Cadastrar usuário")
     print("2. Login")
     print("3. Sair")
 
-    opcao = input("Escolha uma opcao: ")
+    opcao = input("Escolha uma opção: ")
 
     match opcao:
 
         # =========================
         # CADASTRO
         # =========================
+
         case "1":
 
             nome = input("Digite o nome: ")
@@ -230,59 +208,79 @@ while True:
             senha = input("Digite a senha: ")
 
             cpf = input("Digite o CPF: ")
-            if len(cpf) > 11:
-                print("Erro: O número ultrapassou o limite de 11 dígitos!")
+
+            cpf = cpf.replace(".", "").replace("-", "")
+
+            if len(cpf) != 11:
+
+                print("CPF deve conter 11 dígitos!")
                 continue
-
-            # 2. Verifica se faltam dígitos (opcional, mas recomendado)
-            elif len(cpf) < 11:
-                print("Erro: O CPF deve ter exatamente 11 dígitos!")
-                continue
-
-            
-
-            print(f"CPF aceito e validado: {cpf}")
-
 
             if not validar_cpf(cpf):
 
-                print("CPF invalido!")
+                print("CPF inválido!")
                 continue
 
-            
-            
-            qrcode_usuario = (
-                "QR_"
-                + str(random.randint(1000, 9999))
-            
-            )
-            gerar_qrcode(qrcode_usuario)
-
             saldo = float(input("Digite o saldo: "))
-
             pontos = int(input("Digite os pontos: "))
 
-            email_existe = False
+            usuario_existe = False
 
             for usuario in usuarios:
 
                 if (
-                    usuario["email"] == email or usuario["cpf"] == cpf):
-                    email_existe = True
+                    usuario["email"] == email
+                    or
+                    usuario["cpf"] == cpf
+                ):
+
+                    usuario_existe = True
                     break
 
-            if email_existe:
+            if usuario_existe:
 
-                print("Email ou CPF ja cadastrados!")
+                print("Email ou CPF já cadastrados!")
 
             else:
 
+                # =========================
+                # GERAR ID ÚNICA
+                # =========================
+
+                id_usuario = (
+                    "USR_"
+                    + str(random.randint(10000, 99999))
+                )
+
+                # =========================
+                # QR CODE
+                # =========================
+
+                nome_qrcode = f"QR_{id_usuario}"
+
+                dados_qr = (
+                    f"NOME: {nome}\n"
+                    f"EMAIL: {email}\n"
+                    f"ID: {id_usuario}"
+                )
+
+                gerar_qrcode(
+                    nome_qrcode,
+                    dados_qr
+                )
+
+                # =========================
+                # CRIAR USUÁRIO
+                # =========================
+
                 usuario = {
+
+                    "id": id_usuario,
                     "nome": nome,
                     "email": email,
                     "senha": senha,
                     "cpf": cpf,
-                    "qrcode": qrcode,
+                    "qrcode": nome_qrcode,
                     "saldo": saldo,
                     "pontos": pontos
                 }
@@ -291,11 +289,19 @@ while True:
 
                 salvar_usuarios(usuarios)
 
-                print("Usuario cadastrado!")
+                # =========================
+                # GERAR CARTÃO
+                # =========================
+
+                gerar_cartao(usuario)
+
+                print("\nUsuário cadastrado com sucesso!")
+                print(f"ID do usuário: {id_usuario}")
 
         # =========================
         # LOGIN
         # =========================
+
         case "2":
 
             email = input("Digite o email: ")
@@ -307,7 +313,8 @@ while True:
 
                 if (
                     usuario["email"] == email
-                    and usuario["senha"] == senha
+                    and
+                    usuario["senha"] == senha
                 ):
 
                     login = True
@@ -321,15 +328,12 @@ while True:
 
                     while True:
 
-                        print(
-                            "\n===== AREA DO USUARIO ====="
-                        )
-
+                        print("\n===== ÁREA DO USUÁRIO =====")
                         print("1. Ver pontos")
                         print("2. Converter pontos")
                         print("3. Logout")
                         print("4. Realizar embarque")
-                        print("5. Relatorio ambiental")
+                        print("5. Relatório ambiental")
 
                         opcao_usuario = input(
                             "Escolha: "
@@ -340,16 +344,18 @@ while True:
                             # =========================
                             # VER PONTOS
                             # =========================
+
                             case "1":
 
                                 print(
-                                    f"Voce possui "
+                                    f"Você possui "
                                     f"{usuario_logado['pontos']} pontos"
                                 )
 
                             # =========================
                             # CONVERTER PONTOS
                             # =========================
+
                             case "2":
 
                                 pontos = int(
@@ -360,7 +366,8 @@ while True:
 
                                 if (
                                     pontos
-                                    <= usuario_logado["pontos"]
+                                    <=
+                                    usuario_logado["pontos"]
                                 ):
 
                                     usuario_logado["pontos"] -= pontos
@@ -380,6 +387,7 @@ while True:
                             # =========================
                             # LOGOUT
                             # =========================
+
                             case "3":
 
                                 print("Logout realizado.")
@@ -388,6 +396,7 @@ while True:
                             # =========================
                             # EMBARQUE
                             # =========================
+
                             case "4":
 
                                 horario = time.time()
@@ -410,7 +419,7 @@ while True:
                                         if (
                                             embarque["cartao"]
                                             ==
-                                            usuario_logado["cartao"]
+                                            usuario_logado["id"]
                                         ):
 
                                             diferenca = (
@@ -428,8 +437,9 @@ while True:
                                                 )
 
                                     embarques.append({
+
                                         "cartao":
-                                        usuario_logado["cartao"],
+                                        usuario_logado["id"],
 
                                         "horario":
                                         horario
@@ -449,19 +459,21 @@ while True:
                                     )
 
                             # =========================
-                            # RELATORIO AMBIENTAL
+                            # RELATÓRIO AMBIENTAL
                             # =========================
+
                             case "5":
 
                                 total = len(embarques)
 
                                 co2 = (
                                     total
-                                    * co2_por_pessoa
+                                    *
+                                    co2_por_pessoa
                                 )
 
                                 print(
-                                    "\n===== RELATORIO ====="
+                                    "\n===== RELATÓRIO ====="
                                 )
 
                                 print(
@@ -475,7 +487,7 @@ while True:
 
                             case _:
 
-                                print("Opcao invalida!")
+                                print("Opção inválida!")
 
                     break
 
@@ -486,6 +498,7 @@ while True:
         # =========================
         # SAIR
         # =========================
+
         case "3":
 
             print("Saindo...")
@@ -493,4 +506,4 @@ while True:
 
         case _:
 
-            print("Opcao invalida!")
+            print("Opção inválida!")
