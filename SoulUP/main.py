@@ -36,7 +36,7 @@ def gerar_qrcode(nome_arquivo, texto):
 
     print(f"QR Code salvo como {nome_arquivo}.png")
 
-
+aaa
 # =========================
 # GERAR CARTÃO DIGITAL
 # =========================
