@@ -5,8 +5,21 @@ import qrcode
 import random
 import time
 
-PASTA_QR = os.path.join("SoulUp", "QRCod")
-os.makedirs(PASTA_QR, exist_ok=True)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Pasta dos QR Codes
+PASTA_QR = os.path.join(
+    BASE_DIR,
+    "QRCod"
+)
+
+# Pasta dos cartões
+PASTA_CARTOES = os.path.join(
+    BASE_DIR,
+    "Cartao_usr"
+)
+
+
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -46,6 +59,7 @@ def gerar_qrcode(nome_arquivo, texto):
 # =========================
 # GERAR CARTÃO DIGITAL
 # =========================
+
 
 def gerar_cartao(usuario):
 
@@ -133,12 +147,16 @@ def gerar_cartao(usuario):
     card.paste(qr, (580, 110))
 
     # Salvar cartão
+    
     nome_cartao = (
         f"CARTAO_{usuario['id']}.png"
     )
 
-    card.save(nome_cartao)
-
+    caminho_cartao = os.path.join(
+        PASTA_CARTOES,
+        f"{usuario['nome']}.png"
+    )
+    card.save(caminho_cartao)
     print(
         f"Cartão salvo como {nome_cartao}"
     )
