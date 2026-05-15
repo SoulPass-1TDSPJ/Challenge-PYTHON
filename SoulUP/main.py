@@ -31,13 +31,9 @@ embarques = []
 co2_por_pessoa = 2.3
 
 # CARREGAR USUÁRIOS
-
-
 usuarios = carregar_usuarios()
 
 # GERAR QR CODE
-
-
 def gerar_qrcode(nome_arquivo, texto):
 
     qr = qrcode.make(texto)
@@ -52,48 +48,37 @@ def gerar_qrcode(nome_arquivo, texto):
 # GERAR CARTÃO DIGITAL
 
 
+from PIL import Image, ImageDraw, ImageFont
+
 def gerar_cartao(usuario):
+    largura = 750
+    altura = 350
 
-    largura = 800
-    altura = 400
-
-    # Fundo do cartão
-    card = Image.new(
-        "RGB",
-        (largura, altura),
-        color=(15, 15, 15),
-        #arrumaaaaaaa
-        #raio_borda = 40,
-        #fundo = Image.new("RGBA", (largura, altura), (0, 0, 0, 0)),
-        #draw_fundo = ImageDraw.Draw(fundo)
-    )
-
+    # 1. Cria a imagem base vazia
+    card = Image.new("RGB", (largura, altura))
     draw = ImageDraw.Draw(card)
+
+    # 2. Definição das cores ciano (RGB)
+    cor_topo = (0, 50, 70)      # Ciano Escuro
+    cor_base = (0, 180, 200)    # Ciano Claro
+
+    # 3. Desenha o fundo em degradê vertical
+    for y in range(altura):
+        proporcao = y / altura
+        r = int(cor_topo[0] + (cor_base[0] - cor_topo[0]) * proporcao)
+        g = int(cor_topo[1] + (cor_base[1] - cor_topo[1]) * proporcao)
+        b = int(cor_topo[2] + (cor_base[2] - cor_topo[2]) * proporcao)
+        
+        draw.line([(0, y), (largura, y)], fill=(r, g, b))
 
     # Fontes
     try:
-
-        font_nome = ImageFont.truetype(
-            "arial.ttf",
-            40
-        )
-
-        font_info = ImageFont.truetype(
-            "arial.ttf",
-            22
-        )
-
+        font_nome = ImageFont.truetype("ariblk.ttf", 37)
+        font_info = ImageFont.truetype("arial.ttf", 22)
     except:
-
         font_nome = ImageFont.load_default()
         font_info = ImageFont.load_default()
 
-    # Barra verde lateral
-    draw.rectangle(
-        [(0, 0), (20, altura)],
-        fill="#02CE91",
-        
-    )
 
     # Nome
     draw.text(
@@ -115,7 +100,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 210),
         f"ID: {usuario['id']}",
-        fill="#02CE91",
+        fill="#AAAAAA",
         font=font_info
     )
 
@@ -126,31 +111,47 @@ def gerar_cartao(usuario):
         fill="white",
         font=font_info
     )
+    # IMAGEM 
+   
+    
+    foto = Image.open("SoulUP/Photo/icon.png")
+    foto = foto.convert("RGBA")              
+    
+    # 2. Altera o tamanho para o formato retangular mais largo (Largura=x, Altura=y)
+    foto = foto.resize((160, 80))
+    
+    # 3. Cola no canto superior direito (X=660, Y=25) utilizando o canal Alpha como máscara
+    # Como o cartão tem 800px de largura, o ícone terminará no pixel 750 (deixando 50px de margem)
+    card.paste(foto, (515, 10), foto)
 
-    # Abrir QR Code
+    
+    
+   # Abrir QR Code
     qr = Image.open(
-        os.path.join(PASTA_QR, f"{usuario['qrcode']}.png")
+     os.path.join(
+        PASTA_QR,
+        f"{usuario['qrcode']}.png"
     )
-
-    qr = qr.resize((180, 180))
+    )
 
     # Colocar QR no cartão
-    card.paste(qr, (580, 110))
+    qr = qr.resize((180, 180))
+    card.paste(qr, (500, 95))
+
+
+    nome_cartao = os.path.join(
+    PASTA_CARTOES,
+    f"CARTAO_{usuario['id']}.png"
+)
 
     # Salvar cartão
-    
-    nome_cartao = (
-        f"CARTAO_{usuario['id']}.png"
+    card.save(nome_cartao)
+
+    print(
+    f"Cartão salvo como {nome_cartao}"
     )
 
-    caminho_cartao = os.path.join(
-        PASTA_CARTOES,
-        f"{usuario['nome']}.png"
-    )
-    card.save(caminho_cartao)
-    print(
-        f"Cartão salvo como {nome_cartao}"
-    )
+
 
 
 # VALIDAR CPF
@@ -243,7 +244,7 @@ while True:
                     usuario["email"] == email
                     or
                     usuario["cpf"] == cpf
-                ):
+                    ):
 
                     usuario_existe = True
                     break
@@ -292,7 +293,9 @@ while True:
                 usuarios.append(usuario)
 
                 salvar_usuarios(usuarios)
+                
                 # GERAR CARTÃO
+                
                 gerar_cartao(usuario)
 
                 print("\nUsuário cadastrado com sucesso!")

@@ -8,5 +8,15 @@
     "saldo": 19995.0,
     "pontos": 2000000,
     "cartao": "QR_3392"
+  },
+  {
+    "id": "USR_62301",
+    "nome": "Askov Silva",
+    "email": "askov@gmail.com",
+    "senha": "askov",
+    "cpf": "98511622055",
+    "qrcode": "QR_USR_62301",
+    "saldo": 185.0,
+    "pontos": 1800
   }
 ]
