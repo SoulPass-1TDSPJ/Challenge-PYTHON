@@ -9,8 +9,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PASTA_DADOS = os.path.join(BASE_DIR, "Dados_User")
 
 
-
-
 ARQUIVO = os.path.join(
     PASTA_DADOS,
     "usuarios.json"

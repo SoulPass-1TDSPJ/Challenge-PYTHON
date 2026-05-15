@@ -20,30 +20,23 @@ PASTA_CARTOES = os.path.join(
 )
 
 
-
 from PIL import Image, ImageDraw, ImageFont
 
-# =========================
-# CONTROLE DE EMBARQUES
-# =========================
 
+# CONTROLE DE EMBARQUES
 embarques = []
 
-# =========================
 # CONTROLE AMBIENTAL
-# =========================
 
 co2_por_pessoa = 2.3
 
-# =========================
 # CARREGAR USUÁRIOS
-# =========================
+
 
 usuarios = carregar_usuarios()
 
-# =========================
 # GERAR QR CODE
-# =========================
+
 
 def gerar_qrcode(nome_arquivo, texto):
 
@@ -56,9 +49,7 @@ def gerar_qrcode(nome_arquivo, texto):
     print(f"QR Code salvo como {caminho}")
 
 
-# =========================
 # GERAR CARTÃO DIGITAL
-# =========================
 
 
 def gerar_cartao(usuario):
@@ -162,9 +153,7 @@ def gerar_cartao(usuario):
     )
 
 
-# =========================
 # VALIDAR CPF
-# =========================
 
 def validar_cpf(cpf):
 
@@ -210,11 +199,7 @@ def validar_cpf(cpf):
 
     return True
 
-
-# =========================
 # MENU PRINCIPAL
-# =========================
-
 while True:
 
     print("\n===== SOUL PASS =====")
@@ -225,11 +210,8 @@ while True:
     opcao = input("Escolha uma opção: ")
 
     match opcao:
-
-        # =========================
+        
         # CADASTRO
-        # =========================
-
         case "1":
 
             nome = input("Digite o nome: ")
@@ -272,19 +254,14 @@ while True:
 
             else:
 
-                # =========================
                 # GERAR ID ÚNICA
-                # =========================
 
                 id_usuario = (
                     "USR_"
                     + str(random.randint(10000, 99999))
                 )
-
-                # =========================
+                
                 # QR CODE
-                # =========================
-
                 nome_qrcode = f"QR_{id_usuario}"
 
                 dados_qr = (
@@ -298,9 +275,7 @@ while True:
                     dados_qr
                 )
 
-                # =========================
                 # CRIAR USUÁRIO
-                # =========================
 
                 usuario = {
 
@@ -317,20 +292,13 @@ while True:
                 usuarios.append(usuario)
 
                 salvar_usuarios(usuarios)
-
-                # =========================
                 # GERAR CARTÃO
-                # =========================
-
                 gerar_cartao(usuario)
 
                 print("\nUsuário cadastrado com sucesso!")
                 print(f"ID do usuário: {id_usuario}")
 
-        # =========================
         # LOGIN
-        # =========================
-
         case "2":
 
             email = input("Digite o email: ")
@@ -369,10 +337,7 @@ while True:
                         )
 
                         match opcao_usuario:
-
-                            # =========================
                             # VER PONTOS
-                            # =========================
 
                             case "1":
 
@@ -381,10 +346,7 @@ while True:
                                     f"{usuario_logado['pontos']} pontos"
                                 )
 
-                            # =========================
                             # CONVERTER PONTOS
-                            # =========================
-
                             case "2":
 
                                 pontos = int(
@@ -412,20 +374,13 @@ while True:
                                     print(
                                         "Pontos insuficientes!"
                                     )
-
-                            # =========================
                             # LOGOUT
-                            # =========================
-
                             case "3":
 
                                 print("Logout realizado.")
                                 break
 
-                            # =========================
                             # EMBARQUE
-                            # =========================
-
                             case "4":
 
                                 horario = time.time()
@@ -487,10 +442,7 @@ while True:
                                         f"{usuario_logado['saldo']}"
                                     )
 
-                            # =========================
                             # RELATÓRIO AMBIENTAL
-                            # =========================
-
                             case "5":
 
                                 total = len(embarques)
@@ -524,10 +476,7 @@ while True:
 
                 print("Email ou senha incorretos!")
 
-        # =========================
         # SAIR
-        # =========================
-
         case "3":
 
             print("Saindo...")
