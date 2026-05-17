@@ -19,15 +19,12 @@ PASTA_CARTOES = os.path.join(
     "Cartao_usr"
 )
 
-
 from PIL import Image, ImageDraw, ImageFont
-
 
 # CONTROLE DE EMBARQUES
 embarques = []
 
 # CONTROLE AMBIENTAL
-
 co2_por_pessoa = 2.3
 
 # CARREGAR USUÁRIOS
@@ -37,8 +34,11 @@ usuarios = carregar_usuarios()
 def gerar_qrcode(nome_arquivo, texto):
 
     qr = qrcode.make(texto)
-    
-    caminho = os.path.join(PASTA_QR,f"{nome_arquivo}.png")
+
+    caminho = os.path.join(
+        PASTA_QR,
+        f"{nome_arquivo}.png"
+    )
 
     qr.save(caminho)
 
@@ -46,39 +46,60 @@ def gerar_qrcode(nome_arquivo, texto):
 
 
 # GERAR CARTÃO DIGITAL
-
-
-from PIL import Image, ImageDraw, ImageFont
-
 def gerar_cartao(usuario):
+
     largura = 750
     altura = 350
 
-    # 1. Cria a imagem base vazia
     card = Image.new("RGB", (largura, altura))
     draw = ImageDraw.Draw(card)
 
-    # 2. Definição das cores ciano (RGB)
-    cor_topo = (0, 50, 70)      # Ciano Escuro
-    cor_base = (0, 180, 200)    # Ciano Claro
+    cor_topo = (0, 50, 70)
+    cor_base = (0, 180, 200)
 
-    # 3. Desenha o fundo em degradê vertical
     for y in range(altura):
-        proporcao = y / altura
-        r = int(cor_topo[0] + (cor_base[0] - cor_topo[0]) * proporcao)
-        g = int(cor_topo[1] + (cor_base[1] - cor_topo[1]) * proporcao)
-        b = int(cor_topo[2] + (cor_base[2] - cor_topo[2]) * proporcao)
-        
-        draw.line([(0, y), (largura, y)], fill=(r, g, b))
 
-    # Fontes
+        proporcao = y / altura
+
+        r = int(
+            cor_topo[0]
+            +
+            (cor_base[0] - cor_topo[0]) * proporcao
+        )
+
+        g = int(
+            cor_topo[1]
+            +
+            (cor_base[1] - cor_topo[1]) * proporcao
+        )
+
+        b = int(
+            cor_topo[2]
+            +
+            (cor_base[2] - cor_topo[2]) * proporcao
+        )
+
+        draw.line(
+            [(0, y), (largura, y)],
+            fill=(r, g, b)
+        )
+
     try:
-        font_nome = ImageFont.truetype("ariblk.ttf", 37)
-        font_info = ImageFont.truetype("arial.ttf", 22)
+
+        font_nome = ImageFont.truetype(
+            "ariblk.ttf",
+            37
+        )
+
+        font_info = ImageFont.truetype(
+            "arial.ttf",
+            22
+        )
+
     except:
+
         font_nome = ImageFont.load_default()
         font_info = ImageFont.load_default()
-
 
     # Nome
     draw.text(
@@ -111,51 +132,45 @@ def gerar_cartao(usuario):
         fill="white",
         font=font_info
     )
-    # IMAGEM 
-   
-    
+
+    # IMAGEM
     foto = Image.open("SoulUP/Photo/icon.png")
-    foto = foto.convert("RGBA")              
-    
-    # 2. Altera o tamanho para o formato retangular mais largo (Largura=x, Altura=y)
+
+    foto = foto.convert("RGBA")
+
     foto = foto.resize((160, 80))
-    
-    # 3. Cola no canto superior direito (X=660, Y=25) utilizando o canal Alpha como máscara
-    # Como o cartão tem 800px de largura, o ícone terminará no pixel 750 (deixando 50px de margem)
-    card.paste(foto, (515, 10), foto)
 
-    
-    
-   # Abrir QR Code
+    card.paste(
+        foto,
+        (515, 10),
+        foto
+    )
+
+    # QR CODE
     qr = Image.open(
-     os.path.join(
-        PASTA_QR,
-        f"{usuario['qrcode']}.png"
-    )
+        os.path.join(
+            PASTA_QR,
+            f"{usuario['qrcode']}.png"
+        )
     )
 
-    # Colocar QR no cartão
     qr = qr.resize((180, 180))
+
     card.paste(qr, (500, 95))
 
-
     nome_cartao = os.path.join(
-    PASTA_CARTOES,
-    f"CARTAO_{usuario['id']}.png"
-)
+        PASTA_CARTOES,
+        f"CARTAO_{usuario['id']}.png"
+    )
 
-    # Salvar cartão
     card.save(nome_cartao)
 
     print(
-    f"Cartão salvo como {nome_cartao}"
+        f"Cartão salvo como {nome_cartao}"
     )
 
 
-
-
 # VALIDAR CPF
-
 def validar_cpf(cpf):
 
     cpf = cpf.replace(".", "").replace("-", "")
@@ -200,6 +215,7 @@ def validar_cpf(cpf):
 
     return True
 
+
 # MENU PRINCIPAL
 while True:
 
@@ -211,7 +227,7 @@ while True:
     opcao = input("Escolha uma opção: ")
 
     match opcao:
-        
+
         # CADASTRO
         case "1":
 
@@ -244,7 +260,7 @@ while True:
                     usuario["email"] == email
                     or
                     usuario["cpf"] == cpf
-                    ):
+                ):
 
                     usuario_existe = True
                     break
@@ -255,14 +271,12 @@ while True:
 
             else:
 
-                # GERAR ID ÚNICA
-
                 id_usuario = (
                     "USR_"
-                    + str(random.randint(10000, 99999))
+                    +
+                    str(random.randint(10000, 99999))
                 )
-                
-                # QR CODE
+
                 nome_qrcode = f"QR_{id_usuario}"
 
                 dados_qr = (
@@ -275,8 +289,6 @@ while True:
                     nome_qrcode,
                     dados_qr
                 )
-
-                # CRIAR USUÁRIO
 
                 usuario = {
 
@@ -293,9 +305,7 @@ while True:
                 usuarios.append(usuario)
 
                 salvar_usuarios(usuarios)
-                
-                # GERAR CARTÃO
-                
+
                 gerar_cartao(usuario)
 
                 print("\nUsuário cadastrado com sucesso!")
@@ -340,8 +350,8 @@ while True:
                         )
 
                         match opcao_usuario:
-                            # VER PONTOS
 
+                            # VER PONTOS
                             case "1":
 
                                 print(
@@ -352,24 +362,60 @@ while True:
                             # CONVERTER PONTOS
                             case "2":
 
-                                pontos = int(
-                                    input(
-                                        "Digite os pontos: "
-                                    )
+                                print("\n===== RESGATE DE PRÊMIOS =====")
+                                print("1. Fone Bluetooth - 100 pontos")
+                                print("2. Vale Cinema - 200 pontos")
+                                print("3. Mochila Premium - 300 pontos")
+                                print("4. Smartwatch - 500 pontos")
+
+                                premio = input(
+                                    "Escolha o prêmio: "
                                 )
 
+                                if premio == "1":
+
+                                    custo = 100
+                                    nome_premio = "Fone Bluetooth"
+
+                                elif premio == "2":
+
+                                    custo = 200
+                                    nome_premio = "Vale Cinema"
+
+                                elif premio == "3":
+
+                                    custo = 300
+                                    nome_premio = "Mochila Premium"
+
+                                elif premio == "4":
+
+                                    custo = 500
+                                    nome_premio = "Smartwatch"
+
+                                else:
+
+                                    print("Opção inválida!")
+                                    continue
+
                                 if (
-                                    pontos
-                                    <=
                                     usuario_logado["pontos"]
+                                    >=
+                                    custo
                                 ):
 
-                                    usuario_logado["pontos"] -= pontos
+                                    usuario_logado["pontos"] -= custo
 
                                     salvar_usuarios(usuarios)
 
                                     print(
-                                        "Pontos convertidos!"
+                                        f"Prêmio "
+                                        f"'{nome_premio}' "
+                                        f"resgatado com sucesso!"
+                                    )
+
+                                    print(
+                                        f"Pontos restantes: "
+                                        f"{usuario_logado['pontos']}"
                                     )
 
                                 else:
@@ -377,6 +423,7 @@ while True:
                                     print(
                                         "Pontos insuficientes!"
                                     )
+
                             # LOGOUT
                             case "3":
 
