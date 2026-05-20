@@ -1,22 +1,32 @@
 [
-  {
-    "nome": "renato",
-    "email": "renato",
-    "senha": "renato",
-    "cpf": "63874230074",
-    "qrcode": "QR_3392",
-    "saldo": 19995.0,
-    "pontos": 2000000,
-    "cartao": "QR_3392"
-  },
-  {
-    "id": "USR_62301",
-    "nome": "Askov Silva",
-    "email": "askov@gmail.com",
-    "senha": "askov",
-    "cpf": "98511622055",
-    "qrcode": "QR_USR_62301",
-    "saldo": 175.0,
-    "pontos": 1500
-  }
+    {
+        "nome": "renato",
+        "email": "renato",
+        "senha": "renato",
+        "cpf": "63874230074",
+        "qrcode": "QR_3392",
+        "saldo": 19995.0,
+        "pontos": 2000000,
+        "cartao": "QR_3392"
+    },
+    {
+        "id": "USR_62301",
+        "nome": "Askov Silva",
+        "email": "askov@gmail.com",
+        "senha": "askov",
+        "cpf": "98511622055",
+        "qrcode": "QR_USR_62301",
+        "saldo": 175.0,
+        "pontos": 1500
+    },
+    {
+        "id": "USR_50332",
+        "nome": "Rhayssa Luna",
+        "email": "rayssa@gmail.com",
+        "senha": "rayssa[",
+        "cpf": "14144959007",
+        "qrcode": "QR_USR_50332",
+        "saldo": 2000.0,
+        "pontos": 20000
+    }
 ]

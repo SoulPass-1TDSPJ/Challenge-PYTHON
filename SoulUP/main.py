@@ -363,10 +363,10 @@ while True:
                             case "2":
 
                                 print("\n===== RESGATE DE PRÊMIOS =====")
-                                print("1. Fone Bluetooth - 100 pontos")
-                                print("2. Vale Cinema - 200 pontos")
-                                print("3. Mochila Premium - 300 pontos")
-                                print("4. Smartwatch - 500 pontos")
+                                print("1. Conta de Água - 10000 pontos")
+                                print("2. Vale Cinema - 2000000 pontos")
+                                print("3. Mochila Esportiva - 3000000 pontos")
+                                print("4. Smartwatch - 50000000 pontos")
 
                                 premio = input(
                                     "Escolha o prêmio: "
@@ -374,22 +374,22 @@ while True:
 
                                 if premio == "1":
 
-                                    custo = 100
-                                    nome_premio = "Fone Bluetooth"
+                                    custo = 10000
+                                    nome_premio = "Conta de Água"
 
                                 elif premio == "2":
 
-                                    custo = 200
+                                    custo = 2000000
                                     nome_premio = "Vale Cinema"
 
                                 elif premio == "3":
 
-                                    custo = 300
-                                    nome_premio = "Mochila Premium"
+                                    custo = 3000000
+                                    nome_premio = "Mochila Esportiva"
 
                                 elif premio == "4":
 
-                                    custo = 500
+                                    custo = 50000000
                                     nome_premio = "Smartwatch"
 
                                 else:
