@@ -28,5 +28,15 @@
         "qrcode": "QR_USR_50332",
         "saldo": 2000.0,
         "pontos": 20000
+    },
+    {
+        "id": "USR_96066",
+        "nome": "renato",
+        "email": "renato@gmail.com",
+        "senha": "renato2",
+        "cpf": "35016568073",
+        "qrcode": "QR_USR_96066",
+        "saldo": 1995.0,
+        "pontos": 19990000
     }
 ]
