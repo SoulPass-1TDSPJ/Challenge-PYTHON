@@ -29,7 +29,19 @@ co2_por_pessoa = 2.3
 
 # CARREGAR USUÁRIOS
 usuarios = carregar_usuarios()
+#testando codigo pra abrevia nomes
+def abreviar_nome(nome):
+    partes = nome.strip().split()
 
+    if len(partes) == 0:
+        return ""
+
+    resultado = [partes[0]]
+
+    for parte in partes[1:]:
+        resultado.append(parte[0].upper())
+
+    return " ".join(resultado)
 # GERAR QR CODE
 def gerar_qrcode(nome_arquivo, texto):
 
@@ -104,7 +116,7 @@ def gerar_cartao(usuario):
     # Nome
     draw.text(
         (50, 80),
-        usuario["nome"],
+       abreviar_nome(usuario["nome"]),
         fill="white",
         font=font_nome
     )
@@ -367,11 +379,15 @@ while True:
                                 print("2. Vale Cinema - 2000000 pontos")
                                 print("3. Mochila Esportiva - 3000000 pontos")
                                 print("4. Smartwatch - 50000000 pontos")
+                                print("0. Voltar")
 
                                 premio = input(
                                     "Escolha o prêmio: "
                                 )
-
+                                if premio == "0":
+                                    print("Voltando...")
+                                    continue
+                                                             
                                 if premio == "1":
 
                                     custo = 10000

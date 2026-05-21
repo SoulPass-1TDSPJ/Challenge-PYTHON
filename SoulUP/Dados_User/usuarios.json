@@ -38,5 +38,15 @@
         "qrcode": "QR_USR_96066",
         "saldo": 1995.0,
         "pontos": 19990000
+    },
+    {
+        "id": "USR_62985",
+        "nome": "Renato da silva tenorio",
+        "email": "renato2@hotmail.com",
+        "senha": "renato2",
+        "cpf": "88216351046",
+        "qrcode": "QR_USR_62985",
+        "saldo": 19999995.0,
+        "pontos": 1999998000000
     }
 ]
