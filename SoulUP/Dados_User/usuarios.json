@@ -48,5 +48,15 @@
         "qrcode": "QR_USR_62985",
         "saldo": 19999995.0,
         "pontos": 1999998000000
+    },
+    {
+        "id": "USR_99349",
+        "nome": "renato silva",
+        "email": "renato@gmial.com",
+        "senha": "renato2",
+        "cpf": "26369332046",
+        "qrcode": "QR_USR_99349",
+        "saldo": 1995.0,
+        "pontos": 1999990000
     }
 ]
