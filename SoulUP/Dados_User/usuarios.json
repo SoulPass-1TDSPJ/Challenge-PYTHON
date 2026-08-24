@@ -58,5 +58,15 @@
         "qrcode": "QR_USR_99349",
         "saldo": 1995.0,
         "pontos": 1999990000
+    },
+    {
+        "id": "USR_85590",
+        "nome": "teste",
+        "email": "teste@gmail.com",
+        "senha": "123",
+        "cpf": "91677898038",
+        "qrcode": "QR_USR_85590",
+        "saldo": 9995.0,
+        "pontos": 990000
     }
 ]

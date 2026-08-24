@@ -56,6 +56,7 @@ def gerar_qrcode(nome_arquivo, texto):
     qr.save(caminho)
 
     print(f"QR Code salvo como {caminho}")
+    print ("\n")
 
 
 # GERAR CARTÃO DIGITAL
@@ -263,11 +264,13 @@ while True:
             if len(cpf) != 11:
 
                 print("CPF deve conter 11 dígitos!")
+                print ("\n")
                 continue
 
             if not validar_cpf(cpf):
 
                 print("CPF inválido!")
+                print ("\n")
                 continue
 
             saldo = float(input("Digite o saldo: "))
@@ -289,6 +292,7 @@ while True:
             if usuario_existe:
 
                 print("Email ou CPF já cadastrados!")
+                print ("\n")
 
             else:
 
@@ -356,6 +360,7 @@ while True:
                         f"\nBem-vindo "
                         f"{usuario_logado['nome']}"
                     )
+                    print ("\n")
 
                     while True:
 
@@ -379,6 +384,7 @@ while True:
                                     f"Você possui "
                                     f"{usuario_logado['pontos']} pontos"
                                 )
+                                print ("\n")
 
                             # CONVERTER PONTOS
                             case "2":
@@ -395,6 +401,7 @@ while True:
                                 )
                                 if premio == "0":
                                     print("Voltando...")
+                                    print ("\n")
                                     continue
                                                              
                                 if premio == "1":
@@ -420,6 +427,7 @@ while True:
                                 else:
 
                                     print("Opção inválida!")
+                                    print ("\n")
                                     continue
 
                                 if (
@@ -437,24 +445,25 @@ while True:
                                         f"'{nome_premio}' "
                                         f"resgatado com sucesso!"
                                     )
-
+                                    print ("\n")
                                     print(
                                         f"Pontos restantes: "
                                         f"{usuario_logado['pontos']}"
                                     )
-
+                                    print ("\n")
                                 else:
 
                                     print(
                                         "Pontos insuficientes!"
                                     )
-
+                                    print ("\n")
                             # LOGOUT
                             case "3":
 
                                 print("Logout realizado.")
+                                print ("\n")
                                 break
-
+                                
                             # EMBARQUE
                             case "4":
 
@@ -468,7 +477,7 @@ while True:
                                     print(
                                         "Saldo insuficiente!"
                                     )
-
+                                    print ("\n")
                                 else:
 
                                     suspeito = False
@@ -494,7 +503,7 @@ while True:
                                                 print(
                                                     "Comportamento suspeito!"
                                                 )
-
+                                                print ("\n")
                                     embarques.append({
 
                                         "cartao":
@@ -511,12 +520,12 @@ while True:
                                     print(
                                         "Embarque realizado!"
                                     )
-
+                                    print ("\n")
                                     print(
                                         f"Saldo restante: "
                                         f"{usuario_logado['saldo']}"
                                     )
-
+                                    print ("\n")
                             # RELATÓRIO AMBIENTAL
                             case "5":
 
@@ -544,12 +553,14 @@ while True:
                             case _:
 
                                 print("Opção inválida!")
+                                print ("\n")
 
                     break
 
             if not login:
 
                 print("Email ou senha incorretos!")
+                print ("\n")
         # CONSULTAR USUÁRIO
         case "3":
 
@@ -591,10 +602,11 @@ while True:
             if nome_alterado:
 
                 print("Nome alterado com sucesso!")
-
+                print ("\n")
             else:
 
                 print("Usuário não encontrado!")
+                print ("\n")
         # EXCLUIR USUÁRIO
         case "5":
 
@@ -616,20 +628,24 @@ while True:
                 if usuario_excluido:
 
                     print("Usuário excluído com sucesso!")
+                    print ("\n")
 
                 else:
 
                     print("Usuário não encontrado!")
-
+                    print ("\n")
             else:
 
                 print("Exclusão cancelada!")
+                print ("\n")
         # SAIR
         case "6":
 
             print("Saindo...")
+            print ("\n")
             break
 
         case _:
 
             print("Opção inválida!")
+            print ("\n")
