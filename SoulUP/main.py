@@ -1,4 +1,4 @@
-from armazenamento import carregar_usuarios, salvar_usuarios
+from armazenamento import carregar_usuarios, salvar_usuarios, buscar_usuario_por_email, alterar_nome_usuario, excluir_usuario
 
 import os
 import qrcode
@@ -31,6 +31,7 @@ co2_por_pessoa = 2.3
 usuarios = carregar_usuarios()
 #testando codigo pra abrevia nomes
 def abreviar_nome(nome):
+  #recebe um nome completo e retorna uma versão abreviada.
     partes = nome.strip().split()
 
     if len(partes) == 0:
@@ -44,7 +45,7 @@ def abreviar_nome(nome):
     return " ".join(resultado)
 # GERAR QR CODE
 def gerar_qrcode(nome_arquivo, texto):
-
+    
     qr = qrcode.make(texto)
 
     caminho = os.path.join(
@@ -227,14 +228,22 @@ def validar_cpf(cpf):
 
     return True
 
+# CONSULTAR USUÁRIO
+def exibir_menu_principal():
+    #Exibe as opções disponíveis no menu principal
+
+    print("1. Cadastrar usuário")
+    print("2. Login")
+    print("3. Consultar usuário")
+    print("4. Alterar usuário")
+    print("5. Excluir usuário")
+    print("6. Sair")
+
 
 # MENU PRINCIPAL
 while True:
 
-    print("\n===== SOUL PASS =====")
-    print("1. Cadastrar usuário")
-    print("2. Login")
-    print("3. Sair")
+    exibir_menu_principal()
 
     opcao = input("Escolha uma opção: ")
 
@@ -541,9 +550,82 @@ while True:
             if not login:
 
                 print("Email ou senha incorretos!")
-
-        # SAIR
+        # CONSULTAR USUÁRIO
         case "3":
+
+            email_busca = input("Digite o email do usuário: ")
+
+            usuario_encontrado = buscar_usuario_por_email(
+                usuarios,
+                email_busca
+            )
+
+            if usuario_encontrado:
+
+                print("\n===== USUÁRIO ENCONTRADO =====")
+                print(f"Nome: {usuario_encontrado['nome']}")
+                print(f"Email: {usuario_encontrado['email']}")
+                print(f"CPF: {usuario_encontrado['cpf']}")
+                print(f"Saldo: R$ {usuario_encontrado['saldo']}")
+                print(f"Pontos: {usuario_encontrado['pontos']}")
+            else:
+
+                print("Usuário não encontrado!")
+  # ALTERAR NOME DO USUÁRIO
+        case "4":
+
+            email_alteracao = input(
+                "Digite o email do usuário: "
+            )
+
+            novo_nome = input(
+                "Digite o novo nome: "
+            )
+
+            nome_alterado = alterar_nome_usuario(
+                usuarios,
+                email_alteracao,
+                novo_nome
+            )
+
+            if nome_alterado:
+
+                print("Nome alterado com sucesso!")
+
+            else:
+
+                print("Usuário não encontrado!")
+        # EXCLUIR USUÁRIO
+        case "5":
+
+            email_exclusao = input(
+                "Digite o email do usuário: "
+            )
+
+            confirmacao = input(
+                "Tem certeza que deseja excluir? (s/n): "
+            )
+
+            if confirmacao.lower() == "s":
+
+                usuario_excluido = excluir_usuario(
+                    usuarios,
+                    email_exclusao
+                )
+
+                if usuario_excluido:
+
+                    print("Usuário excluído com sucesso!")
+
+                else:
+
+                    print("Usuário não encontrado!")
+
+            else:
+
+                print("Exclusão cancelada!")
+        # SAIR
+        case "6":
 
             print("Saindo...")
             break

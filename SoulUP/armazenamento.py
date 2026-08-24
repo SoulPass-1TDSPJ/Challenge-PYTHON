@@ -26,3 +26,50 @@ def carregar_usuarios():
 def salvar_usuarios(usuarios):
     with open(ARQUIVO, "w", encoding="utf-8") as arquivo:
         json.dump(usuarios, arquivo, indent=4)
+
+
+# ===== BUSCAR USUÁRIO PELO EMAIL =====
+def buscar_usuario_por_email(usuarios, email):
+    """Busca um usuário pelo e-mail informado."""
+
+    for usuario in usuarios:
+        if usuario["email"] == email:
+            return usuario
+
+    return None
+
+
+# ===== ALTERAR NOME DO USUÁRIO =====
+def alterar_nome_usuario(usuarios, email, novo_nome):
+    """Altera o nome de um usuário cadastrado."""
+
+    usuario_encontrado = buscar_usuario_por_email(
+        usuarios,
+        email
+    )
+
+    if usuario_encontrado is None:
+        return False
+
+    usuario_encontrado["nome"] = novo_nome
+
+    salvar_usuarios(usuarios)
+
+    return True
+# excluir usuário
+def excluir_usuario(usuarios, email):
+    """Exclui um usuário cadastrado."""
+
+    usuario_encontrado = buscar_usuario_por_email(
+        usuarios,
+        email
+    )
+
+    if usuario_encontrado is None:
+        return False
+
+    usuarios.remove(usuario_encontrado)
+
+    salvar_usuarios(usuarios)
+
+    return True
