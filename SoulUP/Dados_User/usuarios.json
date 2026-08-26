@@ -78,5 +78,15 @@
         "qrcode": "QR_USR_84828",
         "saldo": 195.0,
         "pontos": 100
+    },
+    {
+        "id": "USR_66174",
+        "nome": "renato linguica",
+        "email": "liguinca01@gmail.com",
+        "senha": "654321",
+        "cpf": "25954874000",
+        "qrcode": "QR_USR_66174",
+        "saldo": 26.0,
+        "pontos": 8000
     }
 ]

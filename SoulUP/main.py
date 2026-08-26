@@ -119,7 +119,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 80),
        abreviar_nome(usuario["nome"]),
-        fill="#C30590",
+        fill="white",
         font=font_nome
     )
 
@@ -143,7 +143,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 260),
         f"Saldo: R${usuario['saldo']}",
-        fill="#C30590",
+        fill="white",
         font=font_info
     )
 
