@@ -68,8 +68,8 @@ def gerar_cartao(usuario):
     card = Image.new("RGB", (largura, altura))
     draw = ImageDraw.Draw(card)
 
-    cor_topo = (0, 50, 70)
-    cor_base = (0, 180, 200)
+    cor_topo = (27, 5, 38)
+    cor_base = (195, 4, 144)
 
     for y in range(altura):
 
@@ -119,7 +119,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 80),
        abreviar_nome(usuario["nome"]),
-        fill="white",
+        fill="#C30590",
         font=font_nome
     )
 
@@ -127,7 +127,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 160),
         f"Email: {usuario['email']}",
-        fill="#AAAAAA",
+        fill="#B8509C",
         font=font_info
     )
 
@@ -135,7 +135,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 210),
         f"ID: {usuario['id']}",
-        fill="#AAAAAA",
+        fill="#B8509C",
         font=font_info
     )
 
@@ -143,7 +143,7 @@ def gerar_cartao(usuario):
     draw.text(
         (50, 260),
         f"Saldo: R${usuario['saldo']}",
-        fill="white",
+        fill="#C30590",
         font=font_info
     )
 

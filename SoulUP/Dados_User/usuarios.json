@@ -68,5 +68,15 @@
         "qrcode": "QR_USR_85590",
         "saldo": 9995.0,
         "pontos": 990000
+    },
+    {
+        "id": "USR_84828",
+        "nome": "Sophia Malagueta",
+        "email": "sophia.sophis@icloud.com",
+        "senha": "123456",
+        "cpf": "98067806047",
+        "qrcode": "QR_USR_84828",
+        "saldo": 195.0,
+        "pontos": 100
     }
 ]
