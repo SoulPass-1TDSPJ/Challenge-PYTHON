@@ -98,5 +98,15 @@
         "qrcode": "QR_USR_74897",
         "saldo": 1.0,
         "pontos": 1
+    },
+    {
+        "id": "USR_27902",
+        "nome": "ana",
+        "email": "ana@gmail.com",
+        "senha": "1234",
+        "cpf": "61343609020",
+        "qrcode": "QR_USR_27902",
+        "saldo": 21223421.0,
+        "pontos": 12312321
     }
 ]
