@@ -528,7 +528,18 @@ while True:
 
                                 else:
                                     if nome_alterado:
-                                        print("Nome alterado com sucesso!")
+                                        # Atualiza os dados armazenados no QR Code
+                                        dados_qr = (
+                                            f"NOME: {usuario_logado['nome']}\n"
+                                            f"EMAIL: {usuario_logado['email']}\n"
+                                            f"ID: {usuario_logado['id']}"
+                                        )
+
+                                        # Substitui o QR Code e o cartão antigos
+                                        gerar_qrcode(usuario_logado["qrcode"], dados_qr)
+                                        gerar_cartao(usuario_logado)
+
+                                        print("Nome e cartão alterados com sucesso!")
                                         print("\n")
                                     else:
                                         print("Usuário não encontrado!")
@@ -547,9 +558,30 @@ while True:
                                 if confirmacao.lower() == "s":
 
                                     try:
-                                        usuario_excluido = excluir_usuario(
-                                            usuarios, usuario_logado["email"]
+                                        # Guarda os caminhos antes de excluir o usuário
+                                        caminho_cartao = os.path.join(
+                                            PASTA_CARTOES,
+                                            f"CARTAO_{usuario_logado['id']}.png",
                                         )
+
+                                        caminho_qrcode = os.path.join(
+                                            PASTA_QR,
+                                            f"{usuario_logado['qrcode']}.png",
+                                        )
+
+                                        usuario_excluido = excluir_usuario(
+                                            usuarios,
+                                            usuario_logado["email"],
+                                        )
+
+                                        if usuario_excluido:
+                                            # Exclui o cartão digital
+                                            if os.path.exists(caminho_cartao):
+                                                os.remove(caminho_cartao)
+
+                                            # Exclui também o QR Code
+                                            if os.path.exists(caminho_qrcode):
+                                                os.remove(caminho_qrcode)
 
                                     except (OSError, TypeError, ValueError):
                                         print("Erro ao excluir o usuário!")
