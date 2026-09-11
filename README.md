@@ -30,18 +30,14 @@ Usuários que realizam ações sustentáveis e acumulam pontos no app SoulUp pod
 
 <div align="center">
 
-| 👤 Nome | 🪪 RM |
-|:---|:---:|
-| João Vitor de Cruz Lima | `571277` |
-| Matheus Ferreira Antônio | `570933` |
-| Sophia Silveira dos Santos | `571932` |
-| Renato da Silva Tenorio | `572928` |
+| 👤 Nome                                 |  🪪 RM   |
+| :-------------------------------------- | :------: |
+| João Vitor de Cruz Lima                 | `571277` |
+| Matheus Ferreira Antônio                | `570933` |
+| Sophia Silveira dos Santos              | `571932` |
+| Renato da Silva Tenorio                 | `572928` |
 | Renato Ruiz Ferreira Fonseca Scolamieri | `568667` |
 
 </div>
 
 <br/>
-
-## Vídeo
-
-- link do YouTube
