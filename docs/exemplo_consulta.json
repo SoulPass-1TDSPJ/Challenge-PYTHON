@@ -1,0 +1,21 @@
+{
+    "exportado_em": "2026-10-30T04:31:06",
+    "usuario": {
+        "id": "USR_QA20261030043103",
+        "nome": "Pessoa D'Agua Demo",
+        "email": "usr_qa20261030043103@example.com",
+        "qrcode": "QR_USR_QA20261030043103",
+        "saldo": 4.99,
+        "pontos": 5000
+    },
+    "embarques": [
+        {
+            "horario": "2026-10-30T04:31:05",
+            "tarifa": 5.0
+        }
+    ],
+    "resumo": {
+        "quantidade_embarques": 1,
+        "co2_estimado_kg": 2.3
+    }
+}

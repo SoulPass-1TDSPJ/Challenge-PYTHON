@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+SoulUP/config_banco_local.py
+SoulUP/Exportacoes/
+SoulUP/QRCod/*.png
+SoulUP/Cartao_usr/*.png
+*.zip
